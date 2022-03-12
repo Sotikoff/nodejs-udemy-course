@@ -1,9 +1,10 @@
 const express = require('express');
+const path = require('path');
 
 const shopRouter = express.Router();
 
 shopRouter.get('/', (req, res, next) => {
-  res.send('<h1>U mama gay</h1>');
+  res.sendFile(path.join(__dirname, '../views/shop.html'));
 });
 
 module.exports = shopRouter;
