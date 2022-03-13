@@ -1,10 +1,20 @@
-const express = require('express');
-const path = require('path');
+import path from 'path';
+
+import express from 'express';
+
+import { products } from './admin.js';
 
 const shopRouter = express.Router();
 
 shopRouter.get('/', (req, res, next) => {
-  res.sendFile(path.join(__dirname, '../views/shop.html'));
+  res.render('shop', {
+    products,
+    path: '/',
+    hasProducts: products.length > 0,
+    pageTitle: 'Shop',
+    activeShop: true,
+    productCSS: true,
+  });
 });
 
-module.exports = shopRouter;
+export { shopRouter };

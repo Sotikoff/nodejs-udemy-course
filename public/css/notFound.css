@@ -1,5 +1,12 @@
-h1 {
+.notFoundTitle {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 600;
   font-size: 28px;
+  color: #05386b;
+  display: none;
+}
+
+.notFoundImage {
+  height: 400px;
+  opacity: 0.5;
 }
