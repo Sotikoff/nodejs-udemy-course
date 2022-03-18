@@ -1,10 +1,8 @@
 import { Product } from '../models/product.js';
 
 function getAddProduct(req, res, next) {
-  res.render('addProduct', {
+  res.render('admin/addProduct', {
     pageTitle: 'Add Product',
-    activeAddProduct: true,
-    formsCSS: true,
     path: '/admin/add-product',
   });
 }
@@ -18,17 +16,14 @@ function postAddProduct(req, res) {
 function getProducts(req, res, next) {
   const products = Product.fetchAll();
 
-  res.render('shop', {
+  res.render('admin/productList', {
     products,
-    path: '/',
-    hasProducts: products.length > 0,
-    pageTitle: 'Shop',
-    activeShop: true,
-    productCSS: true,
+    path: '/admin/products',
+    pageTitle: 'Product list',
   });
 }
 
-export const productsController = {
+export const adminController = {
   getProducts,
   getAddProduct,
   postAddProduct,
