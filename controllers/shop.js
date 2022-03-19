@@ -27,6 +27,13 @@ function getCart(req, res, next) {
   });
 }
 
+function getOrders(req, res, next) {
+  res.render('shop/orders', {
+    path: '/orders',
+    pageTitle: 'Orders',
+  });
+}
+
 function getCheckout(req, res, next) {
   res.render('/checkout', {
     path: '/checkout',
@@ -37,6 +44,7 @@ function getCheckout(req, res, next) {
 export const shopController = {
   getCart,
   getHome,
+  getOrders,
   getCheckout,
   getProducts,
 };

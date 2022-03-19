@@ -8,5 +8,6 @@ shopRouter.get('/', shopController.getHome);
 shopRouter.get('/products', shopController.getProducts);
 shopRouter.get('/cart', shopController.getCart);
 shopRouter.get('/checkout', shopController.getCheckout);
+shopRouter.get('/orders', shopController.getOrders);
 
 export { shopRouter };
