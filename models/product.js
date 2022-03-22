@@ -1,8 +1,13 @@
-import { nanoid } from 'nanoid';
+import fs from 'fs';
+import path from 'path';
 
-const products = [];
+import { nanoid } from 'nanoid';
+import { relativePath } from '../utils/relativePath.js';
+import { DataLayer } from './dataLayer.js';
 
 export class Product {
+  static collection = 'products';
+
   constructor({ title, imageUrl, description, price }) {
     this.title = title;
     this.imageUrl = imageUrl;
@@ -12,15 +17,15 @@ export class Product {
   }
 
   save() {
-    products.push(this);
+    DataLayer.saveItemToCollection('products', this);
   }
 
   static fetchAll() {
-    return products;
+    return DataLayer.getCollectionItems('products');
   }
 
   static findById(targetId, callback) {
-    const product = products.find(({ id }) => id === targetId);
+    const product = DataLayer.getCollectionItems('products').find(({ id }) => id === targetId);
 
     callback(product);
 
