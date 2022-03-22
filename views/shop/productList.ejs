@@ -1,40 +1,40 @@
 <%- include('../partials/head.ejs') %>
-  <link rel="stylesheet" href="/css/product.css" />
+  <link rel="stylesheet" href="/css/product.css">
   </head>
+
   <body>
     <%- include('../partials/navigation.ejs') %>
-    <main>
-      <h1>My Products</h1>
-      <p>List of all the products...</p>
-      <% if (products.length > 0) { %>
-        <div class="grid">
-            <% for (const product of products) { %>
-            <article class="card productItem">
-            <header class="cardHeader">
-                <h1 class="productTitle"><%= product.title %></h1>
-            </header>
-            <div class="cardImage">
-                <img src="<%= product.imageUrl %>" alt="<%= product.title %>" />
-            </div>
-            <div class="cardContent">
-                <h2 class="productPrice">$<%= product.price %></h2>
-                <p class="productDescription"><%= product.description %></p>
-            </div>
-            <div class="cardActions">
-                <button class="button">Add to Cart</button>
-                <form action="/add-to-cart" method="POST">
-                  <button class="btn" type="submit">Add to Cart</button>
-              </form>
-            </div>
-            </article>
+      <main>
+        <h1>My Products</h1>
+        <% if (products.length > 0) { %>
+          <div class="grid">
+            <% for (let product of products) { %>
+              <article class="card productItem">
+                <header class="cardHeader">
+                  <h1 class="productTitle">
+                    <%= product.title %>
+                  </h1>
+                </header>
+                <div class="cardImage">
+                  <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
+                </div>
+                <div class="cardContent">
+                  <h2 class="productPrice">$
+                    <%= product.price %>
+                  </h2>
+                  <p class="productDescription">
+                    <%= product.description %>
+                  </p>
+                </div>
+                <div class="cardActions">
+                  <a href="/products/<%= product.id %>" class="button">Details</a>
+                  <%- include('../partials/addToCart.ejs', { product }) %>
+                </div>
+              </article>
+              <% } %>
+          </div>
+          <% } else { %>
+            <h1>No Products Found!</h1>
             <% } %>
-        </div>
-    <%} else {%>
-      <h1>No products found!</h1>
-    <% } %>
-    </main>
-  </body>
-<%- include('../partials/end.ejs') %>
-
-
-
+      </main>
+      <%- include('../partials/end.ejs') %>

@@ -10,6 +10,18 @@ function getProducts(req, res, next) {
   });
 }
 
+function getProduct(req, res, next) {
+  const { id } = req.params;
+
+  Product.findById(id, (product) => {
+    if (product) {
+      res.render('shop/productDetails', { product, path: `products/${id}`, pageTitle: 'Product details' });
+    } else {
+      res.status(404).render('notFound', { pageTitle: 'Not found', path: '' });
+    }
+  });
+}
+
 function getHome(req, res, next) {
   const products = Product.fetchAll();
 
@@ -41,10 +53,17 @@ function getCheckout(req, res, next) {
   });
 }
 
+function postCart(req, res, next) {
+  res.redirect(`/products/${req.body.id}`);
+}
+
 export const shopController = {
   getCart,
   getHome,
   getOrders,
+  getProduct,
   getCheckout,
   getProducts,
+
+  postCart,
 };
