@@ -29,7 +29,9 @@ export class Product {
   static findById(targetId, callback) {
     const product = DataLayer.getCollection('products').find(({ id }) => id === targetId);
 
-    callback(product);
+    if (callback) {
+      callback(product);
+    }
 
     return product;
   }
