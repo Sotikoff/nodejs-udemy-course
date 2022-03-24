@@ -17,15 +17,17 @@ export class Product {
   }
 
   save() {
-    DataLayer.saveItemToCollection('products', this);
+    const products = DataLayer.getCollection('products');
+    products.push(this);
+    DataLayer.saveCollection('products', products);
   }
 
   static fetchAll() {
-    return DataLayer.getCollectionItems('products');
+    return DataLayer.getCollection('products');
   }
 
   static findById(targetId, callback) {
-    const product = DataLayer.getCollectionItems('products').find(({ id }) => id === targetId);
+    const product = DataLayer.getCollection('products').find(({ id }) => id === targetId);
 
     callback(product);
 

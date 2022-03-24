@@ -1,3 +1,4 @@
+import { Cart } from '../models/cart.js';
 import { Product } from '../models/product.js';
 
 function getProducts(req, res, next) {
@@ -54,7 +55,9 @@ function getCheckout(req, res, next) {
 }
 
 function postCart(req, res, next) {
-  res.redirect(`/products/${req.body.id}`);
+  Cart.addProduct(req.body.productId);
+
+  res.redirect(`/products/${req.body.productId}`);
 }
 
 export const shopController = {

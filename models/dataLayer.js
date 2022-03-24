@@ -4,18 +4,26 @@ import path from 'path';
 import { relativePath } from '../utils/relativePath.js';
 
 export class DataLayer {
-  static saveItemToCollection(collectionName, item) {
-    const items = this.getCollectionItems(collectionName);
-    items.push(item);
-    fs.writeFileSync(relativePath(`../fileDB/${collectionName}.json`), JSON.stringify(items));
+  static saveCollection(collectionName, collection) {
+    fs.writeFileSync(relativePath(`../fileDB/${collectionName}.json`), JSON.stringify(collection));
   }
 
-  static getCollectionItems(collectionName) {
+  static getCollection(collectionName, callback) {
     try {
-      const dbContent = fs.readFileSync(relativePath(`../fileDB/${collectionName}.json`));
-      return JSON.parse(dbContent);
+      const collection = fs.readFileSync(relativePath(`../fileDB/${collectionName}.json`));
+      const parsedCollection = JSON.parse(collection);
+
+      if (callback) {
+        callback(parsedCollection);
+      }
+
+      return parsedCollection;
     } catch {
-      return [];
+      return null;
     }
+  }
+
+  static getCollectionItemById(collectionName, id) {
+    return this.getCollectionItems(collectionName).find(({ id: itemId }) => itemId === id);
   }
 }
