@@ -3,4 +3,20 @@
 
   <body>
     <%- include('../partials/navigation.ejs') %>
+    <main>
+      <% if (cartProducts.length > 0) { %>
+        <ul>
+          <% cartProducts.forEach(({id, title, count}) => { %>
+            <li>
+              <p><%= title %>&nbsp;(<%= count %>)%></p>
+              <form action="/cart/<%= id %>/delete" method="POST">
+                <button class="button" type="submit">Delete</button>
+              </form>
+            </li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <h2>No products</h2>
+      <% } %>
+    </main>
     <%- include('../partials/end.ejs') %>

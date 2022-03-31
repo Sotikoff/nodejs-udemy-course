@@ -4,7 +4,7 @@ import { Product } from '../models/product.js';
 function getAddProduct(req, res, next) {
   res.render('admin/editProduct', {
     pageTitle: 'Add Product',
-    path: '/admin/add-product',
+    path: '/admin/products/add',
     editMode: false,
   });
 }
@@ -22,7 +22,7 @@ function getEditProduct(req, res, next) {
 
   res.render('admin/editProduct', {
     pageTitle: 'Edit Product',
-    path: '/admin/edit-product/:id',
+    path: '/admin/products/:id/edit',
     product,
     editMode: true,
   });
@@ -50,8 +50,8 @@ function postEditProduct(req, res, next) {
 }
 
 function postDeleteProduct(req, res, next) {
-  const targetProduct = Product.findById(req.body.id);
-  Product.deleteById(req.body.id);
+  const targetProduct = Product.findById(req.params.id);
+  Product.deleteById(req.params.id);
 
   if (targetProduct) {
     Cart.removeProduct(targetProduct);

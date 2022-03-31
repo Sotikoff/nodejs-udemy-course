@@ -34,10 +34,28 @@ function getHome(req, res, next) {
 }
 
 function getCart(req, res, next) {
+  const { items } = Cart.fetchCart();
+
+  const cartProducts = items.map((item) => ({
+    ...item,
+    ...(Product.findById(item.id) ?? {}),
+  }));
+
   res.render('shop/cart', {
     path: '/cart',
     pageTitle: 'Your cart',
+    cartProducts,
   });
+}
+
+function postDeleteProductFromCart(req, res, next) {
+  const targetProduct = Product.findById(req.params.id);
+
+  if (targetProduct) {
+    Cart.removeProduct(targetProduct);
+  }
+
+  res.redirect('/cart');
 }
 
 function getOrders(req, res, next) {
@@ -73,4 +91,5 @@ export const shopController = {
   getProducts,
 
   postCart,
+  postDeleteProductFromCart,
 };

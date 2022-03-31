@@ -51,4 +51,8 @@ export class Cart {
 
     DataLayer.saveCollection('cart', cart);
   }
+
+  static fetchCart() {
+    return DataLayer.getCollection('cart');
+  }
 }
