@@ -1,5 +1,4 @@
 import fs from 'fs';
-import path from 'path';
 
 import { relativePath } from '../utils/relativePath.js';
 
@@ -8,7 +7,7 @@ export class DataLayer {
     fs.writeFileSync(relativePath(`../fileDB/${collectionName}.json`), JSON.stringify(collection));
   }
 
-  static getCollection(collectionName, fallbackValue) {
+  static getCollection(collectionName, fallbackValue = undefined) {
     try {
       const collection = fs.readFileSync(relativePath(`../fileDB/${collectionName}.json`));
       const parsedCollection = JSON.parse(collection);

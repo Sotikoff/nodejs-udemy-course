@@ -55,7 +55,11 @@ function getCheckout(req, res, next) {
 }
 
 function postCart(req, res, next) {
-  Cart.addProduct(req.body.id);
+  const targetProduct = Product.findById(req.body.id);
+
+  if (targetProduct) {
+    Cart.addProduct(targetProduct);
+  }
 
   res.redirect(`/products`);
 }

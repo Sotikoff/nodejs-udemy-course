@@ -1,3 +1,4 @@
+import { Cart } from '../models/cart.js';
 import { Product } from '../models/product.js';
 
 function getAddProduct(req, res, next) {
@@ -49,7 +50,12 @@ function postEditProduct(req, res, next) {
 }
 
 function postDeleteProduct(req, res, next) {
+  const targetProduct = Product.findById(req.body.id);
   Product.deleteById(req.body.id);
+
+  if (targetProduct) {
+    Cart.removeProduct(targetProduct);
+  }
 
   res.redirect('/admin/products');
 }
