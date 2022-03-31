@@ -27,14 +27,6 @@ function getEditProduct(req, res, next) {
   });
 }
 
-function postAddProduct(req, res) {
-  new Product(req.body).save();
-
-  res.redirect('/');
-}
-
-function postEditProduct(req, res, next) {}
-
 function getProducts(req, res, next) {
   const products = Product.fetchAll();
 
@@ -45,10 +37,30 @@ function getProducts(req, res, next) {
   });
 }
 
+function postAddProduct(req, res) {
+  new Product(req.body).save();
+
+  res.redirect('/');
+}
+
+function postEditProduct(req, res, next) {
+  new Product(req.body).save();
+  res.redirect('/admin/products');
+}
+
+function postDeleteProduct(req, res, next) {
+  Product.deleteById(req.body.id);
+
+  res.redirect('/admin/products');
+}
+
 export const adminController = {
   getProducts,
   getAddProduct,
   getEditProduct,
+
   postAddProduct,
   postEditProduct,
+
+  postDeleteProduct,
 };

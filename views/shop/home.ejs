@@ -28,7 +28,7 @@
                 </div>
                 <div class="cardActions">
                   <a href="/products/<%= product.id %>" class="button">Details</a>
-                  <%- include('../partials/addToCart.ejs', { product }) %>
+                  <%- include('../partials/addToCart.ejs', { product: product }) %>
                 </div>
               </article>
               <% } %>

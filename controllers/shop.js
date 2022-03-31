@@ -24,7 +24,7 @@ function getProduct(req, res, next) {
 }
 
 function getHome(req, res, next) {
-  const products = Product.fetchAll();
+  const products = Product.fetchAll() ?? [];
 
   res.render('shop/home', {
     products,
@@ -55,9 +55,9 @@ function getCheckout(req, res, next) {
 }
 
 function postCart(req, res, next) {
-  Cart.addProduct(req.body.productId);
+  Cart.addProduct(req.body.id);
 
-  res.redirect(`/products/${req.body.productId}`);
+  res.redirect(`/products`);
 }
 
 export const shopController = {

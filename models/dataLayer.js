@@ -8,18 +8,18 @@ export class DataLayer {
     fs.writeFileSync(relativePath(`../fileDB/${collectionName}.json`), JSON.stringify(collection));
   }
 
-  static getCollection(collectionName, callback) {
+  static getCollection(collectionName, fallbackValue) {
     try {
       const collection = fs.readFileSync(relativePath(`../fileDB/${collectionName}.json`));
       const parsedCollection = JSON.parse(collection);
 
-      if (callback) {
-        callback(parsedCollection);
+      if (fallbackValue) {
+        return parsedCollection ?? fallbackValue;
       }
 
       return parsedCollection;
     } catch {
-      return null;
+      return fallbackValue ?? null;
     }
   }
 

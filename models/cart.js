@@ -4,8 +4,8 @@ export class Cart {
   static addProduct(id) {
     //    If cart doesn't exist, create empty cart (just empty obj)
     const cart = DataLayer.getCollection('cart') ?? {};
-    const product = DataLayer.getCollection('products').find((product) => product.id === id);
-    const cartItem = cart.items?.find(({ productId }) => productId === id);
+    const product = DataLayer.getCollection('products', []).find((product) => product.id === id);
+    const cartItem = cart.items?.find(({ id: productId }) => productId === id);
 
     if (cartItem) {
       cartItem.productsCount += 1;
@@ -16,7 +16,7 @@ export class Cart {
         cart.items = [];
       }
 
-      cart.items.push({ productsCount: 1, productId: id });
+      cart.items.push({ productsCount: 1, id });
       cart.totalPrice = parseFloat(product.price);
     }
 
