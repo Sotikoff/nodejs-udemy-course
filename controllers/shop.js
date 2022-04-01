@@ -1,5 +1,5 @@
-import { Cart } from '../models/cart.js';
-import { Product } from '../models/product.js';
+import { Cart } from '../models/deprecated/cart.js';
+import { Product } from '../models/Product.js';
 
 async function getProducts(req, res, next) {
   const products = await Product.fetchAll();

@@ -1,44 +1,28 @@
-import { v4 } from 'uuid';
+import Sequelize from 'sequelize';
 
-import { db } from '../mysqlDB/db.js';
-export class Product {
-  #isNew = false;
+import { sequelize } from '../mysqlDB/sequelize.js';
 
-  constructor({ id, title, imageUrl, description, price }) {
-    if (!id) {
-      this.id = v4();
-    } else {
-      this.id = id;
-    }
-
-    this.title = title;
-    this.imageUrl = imageUrl;
-    this.description = description;
-    this.price = price;
-  }
-
-  save() {
-    db.execute('INSERT INTO products (id, title, price, description, imageUrl) VALUES (?, ?, ?, ?, ?)', [
-      this.id,
-      this.title,
-      this.price,
-      this.description,
-      this.imageUrl,
-    ]);
-  }
-
-  static fetchAll() {
-    return db.execute('SELECT * FROM products').then(([rows]) => rows);
-  }
-
-  static findById(targetId, callback) {
-    return db.execute('SELECT * FROM products WHERE id = ?', [targetId]).then(([[product]]) => product);
-  }
-
-  static deleteById(targetId) {
-    const updatedProducts = FileDataLayer.getCollection('products', []).filter(({ id }) => id !== targetId);
-    FileDataLayer.saveCollection('products', updatedProducts);
-
-    return targetId;
-  }
-}
+export const Product = sequelize.define('product', {
+  id: {
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV4,
+    allowNull: false,
+    primaryKey: true,
+  },
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  description: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  price: {
+    type: Sequelize.DOUBLE,
+    allowNull: false,
+  },
+  imageUrl: {
+    type: Sequelize.TEXT,
+    allowNull: false,
+  },
+});

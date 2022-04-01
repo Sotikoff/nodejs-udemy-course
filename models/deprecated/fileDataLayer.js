@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import { relativePath } from '../utils/relativePath.js';
+import { relativePath } from '../../utils/relativePath.js';
 
 export class FileDataLayer {
   static saveCollection(collectionName, collection) {

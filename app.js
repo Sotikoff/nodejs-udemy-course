@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import { adminRouter } from './routes/admin.js';
 import { shopRouter } from './routes/shop.js';
 import { errorController } from './controllers/error.js';
+import { sequelize } from './mysqlDB/sequelize.js';
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -15,4 +16,7 @@ app.use(shopRouter);
 app.use('/admin', adminRouter);
 app.use(errorController.notFound);
 
-app.listen(3000);
+sequelize
+  .sync()
+  .then(() => app.listen(3000))
+  .catch((err) => console.error(err));

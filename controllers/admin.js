@@ -1,5 +1,5 @@
-import { Cart } from '../models/cart.js';
-import { Product } from '../models/product.js';
+import { Cart } from '../models/deprecated/cart.js';
+import { Product } from '../models/deprecated/Product.js';
 
 function getAddProduct(req, res, next) {
   res.render('admin/editProduct', {
