@@ -1,9 +1,9 @@
-import { DataLayer } from './dataLayer.js';
+import { FileDataLayer } from './fileDataLayer.js';
 
 export class Cart {
   static addProduct(product) {
     //    If cart doesn't exist, create empty cart (just empty obj)
-    const cart = DataLayer.getCollection('cart', {});
+    const cart = FileDataLayer.getCollection('cart', {});
     const cartItem = this.findById(product.id);
 
     if (cartItem) {
@@ -21,15 +21,15 @@ export class Cart {
       cart.totalPrice += parseFloat(product.price);
     }
 
-    DataLayer.saveCollection('cart', cart);
+    FileDataLayer.saveCollection('cart', cart);
   }
 
   static findById(id) {
-    return DataLayer.getCollection('cart', {}).items?.find(({ id: productId }) => productId === id);
+    return FileDataLayer.getCollection('cart', {}).items?.find(({ id: productId }) => productId === id);
   }
 
   static removeProduct(product) {
-    const cart = DataLayer.getCollection('cart');
+    const cart = FileDataLayer.getCollection('cart');
 
     if (!cart) {
       throw new Error("Cart doesn't exist");
@@ -49,10 +49,10 @@ export class Cart {
 
     cart.totalPrice -= product.price * productQuantity;
 
-    DataLayer.saveCollection('cart', cart);
+    FileDataLayer.saveCollection('cart', cart);
   }
 
   static fetchCart() {
-    return DataLayer.getCollection('cart');
+    return FileDataLayer.getCollection('cart');
   }
 }

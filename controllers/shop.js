@@ -1,8 +1,8 @@
 import { Cart } from '../models/cart.js';
 import { Product } from '../models/product.js';
 
-function getProducts(req, res, next) {
-  const products = Product.fetchAll();
+async function getProducts(req, res, next) {
+  const products = await Product.fetchAll();
 
   res.render('shop/productList', {
     products,
@@ -11,20 +11,20 @@ function getProducts(req, res, next) {
   });
 }
 
-function getProduct(req, res, next) {
+async function getProduct(req, res, next) {
   const { id } = req.params;
 
-  Product.findById(id, (product) => {
-    if (product) {
-      res.render('shop/productDetails', { product, path: `products/${id}`, pageTitle: 'Product details' });
-    } else {
-      res.status(404).render('notFound', { pageTitle: 'Not found', path: '' });
-    }
-  });
+  const product = await Product.findById(id);
+
+  if (product) {
+    res.render('shop/productDetails', { product, path: `products/${id}`, pageTitle: 'Product details' });
+  } else {
+    res.status(404).render('notFound', { pageTitle: 'Not found', path: '' });
+  }
 }
 
-function getHome(req, res, next) {
-  const products = Product.fetchAll() ?? [];
+async function getHome(req, res, next) {
+  const products = await Product.fetchAll();
 
   res.render('shop/home', {
     products,
@@ -33,13 +33,17 @@ function getHome(req, res, next) {
   });
 }
 
-function getCart(req, res, next) {
+async function getCart(req, res, next) {
   const { items } = Cart.fetchCart();
 
-  const cartProducts = items.map((item) => ({
-    ...item,
-    ...(Product.findById(item.id) ?? {}),
-  }));
+  const cartProducts = items.map(async (item) => {
+    const product = await Product.findById(item.id);
+
+    return {
+      ...item,
+      ...(product ?? {}),
+    };
+  });
 
   res.render('shop/cart', {
     path: '/cart',
@@ -72,8 +76,8 @@ function getCheckout(req, res, next) {
   });
 }
 
-function postCart(req, res, next) {
-  const targetProduct = Product.findById(req.body.id);
+async function postCart(req, res, next) {
+  const targetProduct = await Product.findById(req.body.id);
 
   if (targetProduct) {
     Cart.addProduct(targetProduct);

@@ -9,23 +9,21 @@ function getAddProduct(req, res, next) {
   });
 }
 
-function getEditProduct(req, res, next) {
+async function getEditProduct(req, res, next) {
   const { id } = req.params;
 
-  const product = Product.findById(id);
+  const product = await Product.findById(id);
 
-  if (!product) {
+  if (product) {
+    res.render('admin/editProduct', {
+      pageTitle: 'Edit Product',
+      path: '/admin/products/:id/edit',
+      product,
+      editMode: true,
+    });
+  } else {
     res.render('notFound', { pageTitle: 'Product not found', path: req.path });
-
-    return;
   }
-
-  res.render('admin/editProduct', {
-    pageTitle: 'Edit Product',
-    path: '/admin/products/:id/edit',
-    product,
-    editMode: true,
-  });
 }
 
 function getProducts(req, res, next) {
@@ -38,8 +36,8 @@ function getProducts(req, res, next) {
   });
 }
 
-function postAddProduct(req, res) {
-  new Product(req.body).save();
+async function postAddProduct(req, res) {
+  await new Product(req.body).save();
 
   res.redirect('/');
 }
@@ -49,8 +47,9 @@ function postEditProduct(req, res, next) {
   res.redirect('/admin/products');
 }
 
-function postDeleteProduct(req, res, next) {
-  const targetProduct = Product.findById(req.params.id);
+async function postDeleteProduct(req, res, next) {
+  const targetProduct = await Product.findById(req.params.id);
+
   Product.deleteById(req.params.id);
 
   if (targetProduct) {

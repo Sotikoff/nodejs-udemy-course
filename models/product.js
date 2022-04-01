@@ -1,15 +1,12 @@
-import fs from 'fs';
+import { v4 } from 'uuid';
 
-import { nanoid } from 'nanoid';
-import { DataLayer } from './dataLayer.js';
-
+import { db } from '../mysqlDB/db.js';
 export class Product {
   #isNew = false;
 
   constructor({ id, title, imageUrl, description, price }) {
     if (!id) {
-      this.#isNew = true;
-      this.id = nanoid();
+      this.id = v4();
     } else {
       this.id = id;
     }
@@ -21,33 +18,26 @@ export class Product {
   }
 
   save() {
-    let products = DataLayer.getCollection('products', []);
-    if (this.#isNew) {
-      products.push(this);
-    } else {
-      products = products.map((product) => (product.id === this.id ? { ...product, ...this } : product));
-    }
-
-    DataLayer.saveCollection('products', products);
+    db.execute('INSERT INTO products (id, title, price, description, imageUrl) VALUES (?, ?, ?, ?, ?)', [
+      this.id,
+      this.title,
+      this.price,
+      this.description,
+      this.imageUrl,
+    ]);
   }
 
   static fetchAll() {
-    return DataLayer.getCollection('products', []);
+    return db.execute('SELECT * FROM products').then(([rows]) => rows);
   }
 
   static findById(targetId, callback) {
-    const product = DataLayer.getCollection('products', []).find(({ id }) => id === targetId);
-
-    if (callback) {
-      callback(product);
-    }
-
-    return product;
+    return db.execute('SELECT * FROM products WHERE id = ?', [targetId]).then(([[product]]) => product);
   }
 
   static deleteById(targetId) {
-    const updatedProducts = DataLayer.getCollection('products', []).filter(({ id }) => id !== targetId);
-    DataLayer.saveCollection('products', updatedProducts);
+    const updatedProducts = FileDataLayer.getCollection('products', []).filter(({ id }) => id !== targetId);
+    FileDataLayer.saveCollection('products', updatedProducts);
 
     return targetId;
   }

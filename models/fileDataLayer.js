@@ -2,7 +2,7 @@ import fs from 'fs';
 
 import { relativePath } from '../utils/relativePath.js';
 
-export class DataLayer {
+export class FileDataLayer {
   static saveCollection(collectionName, collection) {
     fs.writeFileSync(relativePath(`../fileDB/${collectionName}.json`), JSON.stringify(collection));
   }
